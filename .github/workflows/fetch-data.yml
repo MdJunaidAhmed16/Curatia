@@ -1,0 +1,52 @@
+name: Nightly AI Trends Fetch
+
+on:
+  schedule:
+    - cron: "0 2 * * *" # 2:00 AM UTC every day
+  workflow_dispatch: # Allow manual trigger from GitHub Actions UI
+
+# Required so the default GITHUB_TOKEN can commit and push data files
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20 # Kill the job if fetchers hang
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set TODAY variable
+        run: echo "TODAY=$(date -u +%Y-%m-%d)" >> $GITHUB_ENV
+
+      - name: Run data fetch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
+          PRODUCT_HUNT_CLIENT_ID: ${{ secrets.PRODUCT_HUNT_CLIENT_ID }}
+          PRODUCT_HUNT_CLIENT_SECRET: ${{ secrets.PRODUCT_HUNT_CLIENT_SECRET }}
+        run: python scripts/fetch_all.py
+
+      - name: Commit and push updated data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: nightly AI trends update ${{ env.TODAY }}"
+          file_pattern: "data/latest.json data/history/*.json"
+          commit_user_name: "AI Trends Bot"
+          commit_user_email: "bot@noreply.github.com"
+          commit_author: "AI Trends Bot <bot@noreply.github.com>"
+          # Skip commit if nothing changed (idempotent)
+          skip_dirty_check: false
