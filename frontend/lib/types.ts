@@ -17,6 +17,7 @@ export interface ToolItem {
   thumbnail_url: string | null;
   is_new: boolean;
   trending_score: number | null;
+  tool_type: "app" | "library" | "model" | "unknown";
 }
 
 export interface CategoryCount {

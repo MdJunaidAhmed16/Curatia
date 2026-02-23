@@ -16,14 +16,6 @@ GitHub Actions (2 AM UTC)
 
 ---
 
----
-
-
----
-
-
----
-
 ## Data Sources
 
 | Source | API | Auth | Cost |

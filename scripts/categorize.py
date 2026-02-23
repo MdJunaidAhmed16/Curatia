@@ -129,6 +129,73 @@ CATEGORIES = [
 
 FALLBACK_CATEGORY = "ai-infrastructure"
 
+# ---------------------------------------------------------------------------
+# Tool type classification
+# ---------------------------------------------------------------------------
+
+_APP_SIGNALS = [
+    "app", "application", "tool", "platform", "service", "product",
+    "interface", "dashboard", "ui", "gui", "desktop", "mobile",
+    "web app", "web application", "chat", "assistant", "copilot",
+    "no-code", "low-code", "saas", "startup",
+    "helps you", "allows you to", "lets you",
+    "for teams", "for businesses", "for everyone",
+    "sign up", "free trial", "pricing",
+]
+
+_LIBRARY_SIGNALS = [
+    "library", "framework", "sdk", "package", "module", "toolkit",
+    "wrapper", "bindings", "extension", "plugin", "middleware",
+    "pip install", "npm install", "cargo add", "go get",
+    "python library", "javascript library", "typescript library",
+    "open source library", "open-source library", "rust crate",
+    "import ", "from  import", "require(", "pypi",
+]
+
+_MODEL_SIGNALS = [
+    "model weights", "pretrained", "fine-tuned", "fine tuned",
+    "hugging face model", "gguf", "ggml", "safetensors",
+    "checkpoint", "lora weights", "base model", "chat model",
+    "instruct model", "quantized model", "model card",
+]
+
+
+def classify_tool_type(item: dict) -> str:
+    """
+    Classifies an item as 'app', 'library', or 'model'.
+    - 'app': consumer-facing tools, products, SaaS, dashboards
+    - 'library': developer frameworks, SDKs, packages, APIs
+    - 'model': model weights, checkpoints, fine-tunes
+    """
+    # Source is a strong signal: PH and YC almost always ship consumer apps
+    if item.get("source") in ("producthunt", "ycombinator"):
+        return "app"
+
+    text = " ".join(
+        [
+            item.get("title", "") or "",
+            item.get("description", "") or "",
+            " ".join(item.get("tags", [])),
+        ]
+    ).lower()
+
+    model_score = sum(1 for kw in _MODEL_SIGNALS if kw in text)
+    lib_score = sum(1 for kw in _LIBRARY_SIGNALS if kw in text)
+    app_score = sum(1 for kw in _APP_SIGNALS if kw in text)
+
+    if model_score >= 2:
+        return "model"
+    if lib_score > app_score:
+        return "library"
+    if app_score >= 1:
+        return "app"
+
+    # Default: most highly-starred GitHub AI repos are developer libraries/frameworks
+    if item.get("source") == "github":
+        return "library"
+
+    return "app"
+
 
 def categorize(item: dict) -> str:
     """

@@ -17,7 +17,7 @@ from pathlib import Path
 # Ensure scripts/ is on the path so imports work when run from the repo root
 sys.path.insert(0, str(Path(__file__).parent))
 
-from categorize import categorize, CATEGORIES
+from categorize import categorize, classify_tool_type, CATEGORIES
 from sources import github_repos, hackernews, producthunt, ycombinator, twitter
 
 logging.basicConfig(
@@ -51,6 +51,28 @@ def _deduplicate(items: list[dict]) -> list[dict]:
             if (item.get("score") or 0) > (seen[url].get("score") or 0):
                 seen[url] = item
     return list(seen.values())
+
+
+def _prune_history(history_dir: Path, keep_days: int = 14) -> None:
+    """
+    Delete history JSON files older than `keep_days` days.
+    Only touches files named YYYY-MM-DD.json to avoid accidents.
+    """
+    cutoff = datetime.now(timezone.utc) - timedelta(days=keep_days)
+    deleted = 0
+    for path in sorted(history_dir.glob("????-??-??.json")):
+        try:
+            file_date = datetime.strptime(path.stem, "%Y-%m-%d").replace(
+                tzinfo=timezone.utc
+            )
+            if file_date < cutoff:
+                path.unlink()
+                logger.info("Pruned old history file: %s", path.name)
+                deleted += 1
+        except ValueError:
+            pass  # Skip any file that doesn't match the date pattern
+    if deleted:
+        logger.info("Pruned %d history file(s) older than %d days", deleted, keep_days)
 
 
 def _compute_category_counts(items: list[dict]) -> list[dict]:
@@ -104,9 +126,10 @@ def main() -> None:
     items = _deduplicate(all_items)
     logger.info("After dedup: %d items", len(items))
 
-    # --- Categorize ---
+    # --- Categorize and classify tool type ---
     for item in items:
         item["category"] = categorize(item)
+        item["tool_type"] = classify_tool_type(item)
 
     # --- Sort: items with trending_score first (desc), then None-score items ---
     items.sort(key=lambda x: x.get("trending_score") or -1, reverse=True)
@@ -147,6 +170,10 @@ def main() -> None:
 
     logger.info("Written: %s", latest_path)
     logger.info("Written: %s", history_path)
+
+    # --- Prune history files older than 14 days ---
+    _prune_history(HISTORY_DIR, keep_days=14)
+
     logger.info(
         "Done. %d items from sources: %s",
         len(items),
