@@ -1,8 +1,8 @@
-import { getLatestData } from "@/lib/data";
+import { getIndexData } from "@/lib/data";
 import Dashboard from "@/components/dashboard/Dashboard";
 
-// Server Component: reads data at build time, passes to the client Dashboard
+// Server Component: reads top 100 trending items at build time
 export default function HomePage() {
-  const data = getLatestData();
+  const data = getIndexData();
   return <Dashboard data={data} />;
 }

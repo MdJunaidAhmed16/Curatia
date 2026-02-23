@@ -44,7 +44,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: nightly AI trends update ${{ env.TODAY }}"
-          file_pattern: "data/latest.json data/history/*.json"
+          file_pattern: "data/index.json data/categories/*.json data/history/*.json"
           commit_user_name: "AI Trends Bot"
           commit_user_email: "bot@noreply.github.com"
           commit_author: "AI Trends Bot <bot@noreply.github.com>"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
-import type { LatestData } from "@/lib/types";
+import type { IndexData } from "@/lib/types";
 import type { ToolTypeValue } from "./ToolTypeFilter";
 import { nlpSearch, isNaturalLanguage } from "@/lib/nlp";
 import HeroStats from "./HeroStats";
@@ -13,7 +13,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 interface Props {
-  data: LatestData;
+  data: IndexData;
 }
 
 export default function Dashboard({ data }: Props) {

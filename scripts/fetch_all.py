@@ -4,14 +4,15 @@ Nightly AI Trends orchestrator.
 
 Calls all source fetchers, deduplicates by URL, categorizes each item,
 sorts by trending_score, and writes:
-  - data/latest.json          (overwritten each run)
-  - data/history/YYYY-MM-DD.json  (one per day, never overwritten)
+  - data/index.json                    top 100 trending items (homepage)
+  - data/categories/{slug}.json        all items per category
+  - data/history/YYYY-MM-DD.json       daily snapshot of index (top 100)
 """
 
 import json
 import logging
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 # Ensure scripts/ is on the path so imports work when run from the repo root
@@ -30,6 +31,10 @@ logger = logging.getLogger("fetch_all")
 REPO_ROOT = Path(__file__).parent.parent
 DATA_DIR = REPO_ROOT / "data"
 HISTORY_DIR = DATA_DIR / "history"
+CATEGORIES_DIR = DATA_DIR / "categories"
+
+# Number of top-trending items to include in index.json (homepage)
+TOP_N = 100
 
 
 # ---------------------------------------------------------------------------
@@ -156,20 +161,44 @@ def main() -> None:
     # --- Write files ---
     DATA_DIR.mkdir(exist_ok=True)
     HISTORY_DIR.mkdir(exist_ok=True)
+    CATEGORIES_DIR.mkdir(exist_ok=True)
 
-    latest_path = DATA_DIR / "latest.json"
+    # index.json — top N trending items for the homepage
+    index_payload = {
+        "metadata": payload["metadata"],
+        "items": items[:TOP_N],
+        "categories": payload["categories"],
+    }
+    index_path = DATA_DIR / "index.json"
+    with open(index_path, "w", encoding="utf-8") as f:
+        json.dump(index_payload, f, indent=2, ensure_ascii=False)
+    logger.info("Written: %s (%d items)", index_path, len(index_payload["items"]))
+
+    # categories/{slug}.json — all items for each category
+    by_category: dict[str, list] = {}
+    for item in items:
+        cat = item.get("category", "")
+        by_category.setdefault(cat, []).append(item)
+
+    for cat_info in CATEGORIES:
+        slug = cat_info["slug"]
+        cat_items = by_category.get(slug, [])
+        cat_path = CATEGORIES_DIR / f"{slug}.json"
+        cat_payload = {
+            "slug": slug,
+            "label": cat_info["label"],
+            "items": cat_items,
+        }
+        with open(cat_path, "w", encoding="utf-8") as f:
+            json.dump(cat_payload, f, indent=2, ensure_ascii=False)
+        logger.info("Written: %s (%d items)", cat_path, len(cat_items))
+
+    # history — daily snapshot of index (top N items)
     history_path = HISTORY_DIR / f"{today}.json"
-
-    with open(latest_path, "w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2, ensure_ascii=False)
-
-    # Only write history file if it doesn't already exist (idempotent re-runs)
     if not history_path.exists():
         with open(history_path, "w", encoding="utf-8") as f:
-            json.dump(payload, f, indent=2, ensure_ascii=False)
-
-    logger.info("Written: %s", latest_path)
-    logger.info("Written: %s", history_path)
+            json.dump(index_payload, f, indent=2, ensure_ascii=False)
+        logger.info("Written: %s", history_path)
 
     # --- Prune history files older than 14 days ---
     _prune_history(HISTORY_DIR, keep_days=14)

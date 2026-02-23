@@ -1,0 +1,146 @@
+{
+  "slug": "local-ai",
+  "label": "Local AI",
+  "items": [
+    {
+      "id": "yc_mth-sense",
+      "source": "ycombinator",
+      "title": "Mth Sense",
+      "description": "We're a mobile on-device profiling and ad-serving platform initially…",
+      "url": "http://www.mthsense.com/",
+      "author": "YC Summer 2012",
+      "stars": null,
+      "score": null,
+      "tags": [
+        "privacy",
+        "advertising"
+      ],
+      "language": null,
+      "created_at": 1336096613,
+      "fetched_at": "2026-02-22T10:41:52.491362+00:00",
+      "thumbnail_url": "/company/thumb/missing.png",
+      "is_new": false,
+      "trending_score": null,
+      "category": "local-ai",
+      "tool_type": "app"
+    },
+    {
+      "id": "yc_chatwoot",
+      "source": "ycombinator",
+      "title": "Chatwoot",
+      "description": "The modern, open source, self-hosted AI customer support platform",
+      "url": "https://www.chatwoot.com",
+      "author": "YC Winter 2021",
+      "stars": null,
+      "score": null,
+      "tags": [
+        "b2b",
+        "customer success",
+        "open source",
+        "customer service",
+        "customer support"
+      ],
+      "language": null,
+      "created_at": 1614018154,
+      "fetched_at": "2026-02-22T10:41:52.491362+00:00",
+      "thumbnail_url": "https://bookface-images.s3.amazonaws.com/small_logos/de9da9b7b526c451e6b6c447527e638ebaf7d27f.png",
+      "is_new": false,
+      "trending_score": null,
+      "category": "local-ai",
+      "tool_type": "app"
+    },
+    {
+      "id": "yc_iomete",
+      "source": "ycombinator",
+      "title": "IOMETE",
+      "description": "Self-hosted data lakehouse platform",
+      "url": "https://www.iomete.com/",
+      "author": "YC Winter 2022",
+      "stars": null,
+      "score": null,
+      "tags": [
+        "analytics"
+      ],
+      "language": null,
+      "created_at": 1644374925,
+      "fetched_at": "2026-02-22T10:41:52.491362+00:00",
+      "thumbnail_url": "https://bookface-images.s3.amazonaws.com/small_logos/d0597230dc5b69128c0f3bcea1b68ac1fa6181fa.png",
+      "is_new": false,
+      "trending_score": null,
+      "category": "local-ai",
+      "tool_type": "app"
+    },
+    {
+      "id": "yc_runlocal-ai",
+      "source": "ycombinator",
+      "title": "RunLocal AI",
+      "description": "The On-Device AI Development Platform ",
+      "url": "https://runlocal.ai",
+      "author": "YC Summer 2024",
+      "stars": null,
+      "score": null,
+      "tags": [
+        "artificial intelligence",
+        "developer tools",
+        "ml"
+      ],
+      "language": null,
+      "created_at": 1722617907,
+      "fetched_at": "2026-02-22T10:41:52.491362+00:00",
+      "thumbnail_url": "https://bookface-images.s3.amazonaws.com/small_logos/4f47cbbc26af6f2d783af0166e54e51212101bcc.png",
+      "is_new": false,
+      "trending_score": null,
+      "category": "local-ai",
+      "tool_type": "app"
+    },
+    {
+      "id": "yc_runanywhere",
+      "source": "ycombinator",
+      "title": "RunAnywhere",
+      "description": "The default way of running On-Device AI at Scale",
+      "url": "https://www.runanywhere.ai/",
+      "author": "YC Winter 2026",
+      "stars": null,
+      "score": null,
+      "tags": [
+        "artificial intelligence",
+        "developer tools",
+        "iot",
+        "open source",
+        "enterprise"
+      ],
+      "language": null,
+      "created_at": 1767296079,
+      "fetched_at": "2026-02-22T10:41:52.491362+00:00",
+      "thumbnail_url": "https://bookface-images.s3.amazonaws.com/small_logos/361f4cc73d27e788a8d1f92355ba04c3d71218ee.png",
+      "is_new": false,
+      "trending_score": null,
+      "category": "local-ai",
+      "tool_type": "app"
+    },
+    {
+      "id": "yc_tsenta",
+      "source": "ycombinator",
+      "title": "Tsenta",
+      "description": "AI-Native, On-Device Job Automation",
+      "url": "https://tsenta.com",
+      "author": "YC Summer 2026",
+      "stars": null,
+      "score": null,
+      "tags": [
+        "artificial intelligence",
+        "consumer",
+        "recruiting",
+        "hr tech"
+      ],
+      "language": null,
+      "created_at": 1769729252,
+      "fetched_at": "2026-02-22T10:41:52.491362+00:00",
+      "thumbnail_url": "https://bookface-images.s3.amazonaws.com/small_logos/5670afa2f39d71d15be15ed4c56ae5e0a65dbea4.png",
+      "is_new": false,
+      "trending_score": null,
+      "category": "local-ai",
+      "tool_type": "app"
+    }
+  ]
+}

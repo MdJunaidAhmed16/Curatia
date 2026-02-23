@@ -34,8 +34,14 @@ export interface Metadata {
   schema_version: string;
 }
 
-export interface LatestData {
+export interface IndexData {
   metadata: Metadata;
-  items: ToolItem[];
+  items: ToolItem[];       // top N trending items (for homepage)
   categories: CategoryCount[];
+}
+
+export interface CategoryData {
+  slug: string;
+  label: string;
+  items: ToolItem[];       // all items in this category
 }

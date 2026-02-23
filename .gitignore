@@ -33,6 +33,7 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Data — keep latest.json and history/ tracked (that's our "database")
-# but ignore any temp/scratch files
+# Data — keep index.json, categories/, and history/ tracked (that's our "database")
+# but ignore any temp/scratch files and the old monolithic file
+data/latest.json
 data/scratch/

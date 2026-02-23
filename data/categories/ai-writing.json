@@ -1,0 +1,49 @@
+{
+  "slug": "ai-writing",
+  "label": "AI Writing",
+  "items": [
+    {
+      "id": "yc_jasper-ai",
+      "source": "ycombinator",
+      "title": "Jasper.ai",
+      "description": "Jasper is a leader in creating content using Artificial Intelligence",
+      "url": "https://jasper.ai",
+      "author": "YC Winter 2018",
+      "stars": null,
+      "score": null,
+      "tags": [
+        "artificial intelligence",
+        "generative ai",
+        "ai",
+        "conversational ai"
+      ],
+      "language": null,
+      "created_at": 1666106268,
+      "fetched_at": "2026-02-22T10:41:52.491362+00:00",
+      "thumbnail_url": "https://bookface-images.s3.amazonaws.com/small_logos/18b90074b86630e3f25f2673c29d94e8c03c9018.png",
+      "is_new": false,
+      "trending_score": null,
+      "category": "ai-writing",
+      "tool_type": "app"
+    },
+    {
+      "id": "yc_schemeflow",
+      "source": "ycombinator",
+      "title": "SchemeFlow",
+      "description": "AI Report Generation for Engineering & Environmental Review",
+      "url": "https://www.schemeflow.com",
+      "author": "YC Summer 2024",
+      "stars": null,
+      "score": null,
+      "tags": [],
+      "language": null,
+      "created_at": 1717067157,
+      "fetched_at": "2026-02-22T10:41:52.491362+00:00",
+      "thumbnail_url": "https://bookface-images.s3.amazonaws.com/small_logos/ac4a7beb03a05695b7b9e9e9353c8cb94a4bfa8d.png",
+      "is_new": false,
+      "trending_score": null,
+      "category": "ai-writing",
+      "tool_type": "app"
+    }
+  ]
+}
