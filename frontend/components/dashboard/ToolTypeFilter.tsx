@@ -10,11 +10,11 @@ interface Props {
   onChange: (value: ToolTypeValue) => void;
 }
 
-const OPTIONS: { value: ToolTypeValue; label: string; emoji: string; description: string }[] = [
-  { value: "all",     label: "All",           emoji: "⚡", description: "Everything" },
-  { value: "app",     label: "Apps & Tools",  emoji: "🛠️", description: "Consumer-facing products" },
-  { value: "library", label: "Libraries",     emoji: "📦", description: "Developer frameworks & SDKs" },
-  { value: "model",   label: "Models",        emoji: "🧠", description: "Weights & checkpoints" },
+const OPTIONS: { value: ToolTypeValue; label: string }[] = [
+  { value: "all",     label: "All types"  },
+  { value: "app",     label: "Apps"       },
+  { value: "library", label: "Libraries"  },
+  { value: "model",   label: "Models"     },
 ];
 
 export default function ToolTypeFilter({ items, active, onChange }: Props) {
@@ -26,23 +26,25 @@ export default function ToolTypeFilter({ items, active, onChange }: Props) {
   };
 
   return (
-    <div className="flex gap-2 flex-wrap">
+    <div className="inline-flex items-center gap-0.5 p-0.5 rounded-lg bg-gray-100 border border-gray-200">
       {OPTIONS.map((opt) => {
         const isActive = active === opt.value;
         return (
           <button
             key={opt.value}
             onClick={() => onChange(opt.value)}
-            title={opt.description}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150 ${
               isActive
-                ? "bg-gray-900 text-white shadow-sm"
-                : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 hover:border-gray-300"
+                ? "bg-white text-gray-900 shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            <span>{opt.emoji}</span>
-            <span>{opt.label}</span>
-            <span className={`text-xs tabular-nums ${isActive ? "text-gray-300" : "text-gray-400"}`}>
+            {opt.label}
+            <span
+              className={`text-xs tabular-nums ${
+                isActive ? "text-gray-400" : "text-gray-400/50"
+              }`}
+            >
               {counts[opt.value].toLocaleString()}
             </span>
           </button>

@@ -8,7 +8,20 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// Required for static export — pre-renders one page per category
+const CATEGORY_ICONS: Record<string, string> = {
+  "llm-models":        "🤖",
+  "ai-agents":         "🕵️",
+  "code-generation":   "💻",
+  "image-video":       "🎨",
+  "voice-audio":       "🎙️",
+  "rag-search":        "🔍",
+  "local-ai":          "🏠",
+  "ai-infrastructure": "⚙️",
+  "data-analytics":    "📊",
+  "ai-writing":        "✍️",
+  "robotics-embodied": "🦾",
+};
+
 export async function generateStaticParams() {
   const data = getIndexData();
   return data.categories
@@ -21,8 +34,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = getIndexData();
   const cat = data.categories.find((c) => c.slug === slug);
   return {
-    title: `${cat?.label ?? slug} — AI Trends`,
-    description: `Latest ${cat?.label ?? slug} tools and repos.`,
+    title: `${cat?.label ?? slug} — CurateAI`,
+    description: `Latest ${cat?.label ?? slug} tools, repos and launches.`,
   };
 }
 
@@ -32,30 +45,47 @@ export default async function CategoryPage({ params }: Props) {
   const categoryData = getCategoryData(slug);
 
   const category = indexData.categories.find((c) => c.slug === slug);
+  const icon = CATEGORY_ICONS[slug] ?? "🔹";
+  const label = category?.label ?? categoryData.label;
 
   return (
     <>
       <Header items={categoryData.items} />
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
+        {/* Page header */}
+        <div className="mb-8">
           <a
             href="/"
-            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-600 transition-colors mb-4 group"
           >
-            ← Back to all
+            <svg
+              className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            All tools
           </a>
-          <h1 className="text-2xl font-bold text-gray-900 mt-2">
-            {category?.label ?? categoryData.label}
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            {categoryData.items.length} tool{categoryData.items.length !== 1 ? "s" : ""}
-          </p>
+
+          <div className="flex items-center gap-3">
+            <span className="text-3xl leading-none">{icon}</span>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">{label}</h1>
+              <p className="text-sm text-gray-500 mt-0.5">
+                {categoryData.items.length.toLocaleString()} tool{categoryData.items.length !== 1 ? "s" : ""}
+              </p>
+            </div>
+          </div>
         </div>
 
         {categoryData.items.length === 0 ? (
-          <p className="text-gray-400 text-center py-16">
-            No tools found in this category yet.
-          </p>
+          <div className="py-24 text-center">
+            <p className="text-4xl mb-3">🔭</p>
+            <p className="text-gray-400 text-sm">No tools found in this category yet.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {categoryData.items.map((item) => (
@@ -64,6 +94,7 @@ export default async function CategoryPage({ params }: Props) {
           </div>
         )}
       </main>
+
       <Footer generatedAt={indexData.metadata.generated_at} />
     </>
   );
